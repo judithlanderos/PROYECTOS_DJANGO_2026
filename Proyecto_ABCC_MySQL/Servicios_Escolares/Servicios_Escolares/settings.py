@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os  # agregado para variables de entorno
+import dj_database_url  # agregado para usar DATABASE_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9m(j^w1k$n05l2$#mod^jksp#@$b@+a)hea-cp=-0%ya#gear@'
+
+# ORIGINAL (solo para local)
+# SECRET_KEY = 'django-insecure-9m(j^w1k$n05l2$#mod^jksp#@$b@+a)hea-cp=-0%ya#gear@'
+
+# NUEVO (producción con Render)
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# ORIGINAL
+# DEBUG = True
+
+# NUEVO
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+
+# ORIGINAL
+# ALLOWED_HOSTS = []
+
+# NUEVO (Render)
+ALLOWED_HOSTS = ['.onrender.com']
 
 
 # Application definition
@@ -76,19 +94,26 @@ WSGI_APPLICATION = 'Servicios_Escolares.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
 
-    'default' :{
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'BD_Django_2026',
-        'USER' : 'judith',
-        'PASSWORD' : 'judith-1',
-        'HOST' : 'localhost',
-        'PORT' : '3306',
-    }
+    # CONFIGURACIONES ANTERIORES (solo local)
+    # 'sqlite': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
+
+    # 'default' :{
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME' : 'BD_Django_2026',
+    #     'USER' : 'judith',
+    #     'PASSWORD' : 'judith-1',
+    #     'HOST' : 'localhost',
+    #     'PORT' : '3306',
+    # }
+
+    # NUEVO (producción con Clever Cloud)
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL")
+    )
 }
 
 
@@ -128,10 +153,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # LOGIN
 LOGIN_URL = 'login'
