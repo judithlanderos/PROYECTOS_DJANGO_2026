@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+</head>
+
+<body class="container mt-5">
+
+  <h2>Iniciar Sesión</h2>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div class="alert alert-danger">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label>Usuario</label>
+      <input type="text" name="username" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Contraseña</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+
+    <button class="btn btn-primary">Entrar</button>
+    <a href="{% url 'registro' %}" class="btn btn-secondary">Registrarse</a>
+
+  </form>
+
+</body>
+</html>
