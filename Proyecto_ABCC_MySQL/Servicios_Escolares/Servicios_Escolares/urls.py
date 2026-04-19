@@ -19,6 +19,7 @@ from django.urls import path
 
 
 from escolares.views import *
+
 from escolares import views
 
 urlpatterns = [

@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-import os  # agregado para variables de entorno
-import dj_database_url  # agregado para usar DATABASE_URL
+import os  
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,23 +26,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-9m(j^w1k$n05l2$#mod^jksp#@$b@+a)hea-cp=-0%ya#gear@'
 
 # NUEVO (producción con Render)
-SECRET_KEY = os.getenv("SECRET_KEY")
-
+#SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = '123456789abcdef'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # ORIGINAL
-# DEBUG = True
+DEBUG = True
 
 # NUEVO
-DEBUG = os.getenv("DEBUG", "False") == "True"
+#DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
 # ORIGINAL
 # ALLOWED_HOSTS = []
 
-# NUEVO (Render)
-ALLOWED_HOSTS = ['.onrender.com']
+# NUEVO 
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
 
 # Application definition
@@ -95,7 +94,7 @@ WSGI_APPLICATION = 'Servicios_Escolares.wsgi.application'
 
 DATABASES = {
 
-    # CONFIGURACIONES ANTERIORES (solo local)
+    # CONFIGURACIONES local
     # 'sqlite': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
@@ -109,11 +108,14 @@ DATABASES = {
     #     'HOST' : 'localhost',
     #     'PORT' : '3306',
     # }
-
-    # NUEVO (producción con Clever Cloud)
-    'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL")
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'b57flrfdlbobgcgrixov',
+        'USER': 'ud8d9eugisxvqsq4',
+        'PASSWORD': 'J8k0wjatJQaxTOBTd96Z',
+        'HOST': 'b57flrfdlbobgcgrixov-mysql.services.clever-cloud.com',
+        'PORT': '3306',
+    }
 }
 
 
@@ -164,3 +166,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/alumnos'
 LOGOUT_REDIRECT_URL = 'login'
+
+#print(DATABASES)
